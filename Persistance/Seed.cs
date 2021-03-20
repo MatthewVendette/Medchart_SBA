@@ -10,9 +10,9 @@ namespace Persistance
     //Seeds the database with some initial data for testing
     public class Seed
     {
-        public static async Task SeedData (DataContext ctx) 
+        public static async Task SeedData (DataContext context) 
         {
-            if (ctx.BloodWorks.Any()) return; //only seed if empty
+            if (context.BloodWorks.Any()) return; //only seed if empty
             
             var bloodWorks = new List<BloodWork>
             {
@@ -52,8 +52,8 @@ namespace Persistance
                 
             };
             
-            await ctx.BloodWorks.AddRangeAsync(bloodWorks);
-            await ctx.SaveChangesAsync();
+            await context.BloodWorks.AddRangeAsync(bloodWorks);
+            await context.SaveChangesAsync();
         }
     }
 }
