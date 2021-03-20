@@ -21,8 +21,8 @@ export default function NavBar({isModalFormOpen, showModal}: Props) {
                     />
                     Matt's SBA</Navbar.Brand>
                 <Nav className="mr-auto">
-                    <Nav.Link>Home</Nav.Link>
-                    <Nav.Link style={{marginRight:'10px'}}>Accounts</Nav.Link>
+                    {/* <Nav.Link>Home</Nav.Link>
+                    <Nav.Link style={{marginRight:'10px'}}>Accounts</Nav.Link> */}
                     <Form inline>
                         <Button variant="outline-light" onClick={showModal}>Submit new bloodwork</Button>
                     </Form>

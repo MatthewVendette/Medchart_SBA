@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { BloodWork } from '../models/bloodWork';
 import NavBar from './NavBar';
 import { Container } from 'react-bootstrap';
 import BloodWorkDashboard from '../../features/bloodworks/dashboard/BloodWorkDashboard';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
 
 function App() {
   const [bloodWorks, setBloodWorks] = useState<BloodWork[]>([])
@@ -13,8 +13,16 @@ function App() {
 
   //get the bloodwork results from database and set in state
   useEffect(() => {
-    axios.get<BloodWork[]>('http://localhost:5000/api/bloodworks').then(response => {
-      setBloodWorks(response.data)
+    agent.BloodWorks.list().then(response => {
+
+      let bloodWorks: BloodWork[] = [];
+      response.forEach(x => {
+        x.examDate = x.examDate.split('T')[0]; //remove precise time
+        x.resultsDate = x.resultsDate.split('T')[0]; //remove precise time
+        bloodWorks.push(x);
+      })
+
+      setBloodWorks(bloodWorks)
     })
   }, []) //only run once
 
@@ -39,15 +47,29 @@ function App() {
   }
 
   function handleCreateOrEditBloodWork(bloodWork: BloodWork) {
-    bloodWork.id 
-    ? setBloodWorks([...bloodWorks.filter(x => x.id !== bloodWork.id), bloodWork])   //If there's an id, edit the given report
-    : setBloodWorks([...bloodWorks, {...bloodWork, id: uuid()}]); //otherwise, append the new bloodwork to the end
-    hideModal();
-    setSelectedBloodWork(bloodWork);
+    if (bloodWork.id) {
+      agent.BloodWorks.update(bloodWork).then(() => {
+        setBloodWorks([...bloodWorks.filter(x => x.id !== bloodWork.id), bloodWork]);   //If there's an id, edit the given report
+        setSelectedBloodWork(bloodWork);
+        hideModal();
+      })
+    } 
+    else 
+    {
+      bloodWork.id = uuid();
+      agent.BloodWorks.create(bloodWork).then(() => {
+        setBloodWorks([...bloodWorks, bloodWork]);
+        setSelectedBloodWork(bloodWork);
+        hideModal();
+      })
+    }
   }
 
   function handleDelete(id: string) {
-    setBloodWorks([...bloodWorks.filter(x => x.id !== id)]);
+    agent.BloodWorks.delete(id).then(() => {
+      setBloodWorks([...bloodWorks.filter(x => x.id !== id)]);
+
+    })
     handleCancelSelectBloodWork();
   }
 

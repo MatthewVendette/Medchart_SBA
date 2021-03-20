@@ -11,6 +11,7 @@ interface Props {
 
 export default function BloodWorkForm({bloodWork: selectedBloodWork, hideModal, isModalFormOpen, createOrEdit}: Props) {
 
+    //Use the selected blood work if there is one. Otherwise, set a blank blood work to use.
     const initialState = selectedBloodWork ?? {
         id: '',
         title: '',
@@ -47,42 +48,42 @@ export default function BloodWorkForm({bloodWork: selectedBloodWork, hideModal, 
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="Title">Title</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="Title" name="title" value={bloodWork.title} onChange={handleInputChange}/>
+                            <FormControl aria-label="Title" name="title" value={bloodWork.title} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="ExamDate">Exam Date</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="ExamDate" name="examDate" value={bloodWork.examDate} onChange={handleInputChange}/>
+                            <FormControl type="date" aria-label="ExamDate" name="examDate" value={bloodWork.examDate} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="ResultsDate">Results Date</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="ResultsDate" name="resultsDate" value={bloodWork.resultsDate} onChange={handleInputChange}/>
+                            <FormControl type="date" aria-label="ResultsDate" name="resultsDate" value={bloodWork.resultsDate} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="Description">Description</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl as="textarea" aria-label="Description" name="description" value={bloodWork.description} onChange={handleInputChange}/>
+                            <FormControl as="textarea" aria-label="Description" name="description" value={bloodWork.description} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="Hemoglobin">Hemoglobin</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="Hemoglobin" name="hemoglobin" value={bloodWork.hemoglobin} onChange={handleInputChange}/>
+                            <FormControl type="number" aria-label="Hemoglobin" name="hemoglobin" value={bloodWork.hemoglobin} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="Hematocrit">Hematocrit</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="Hematocrit" name="hematocrit" value={bloodWork.hematocrit} onChange={handleInputChange}/>
+                            <FormControl type="number" aria-label="Hematocrit" name="hematocrit" value={bloodWork.hematocrit} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="WhiteBloodCellCount">White Blood Cell Count</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="WhiteBloodCellCount" name="whiteBloodCellCount" value={bloodWork.whiteBloodCellCount} onChange={handleInputChange}/>
+                            <FormControl type="number" aria-label="WhiteBloodCellCount" name="whiteBloodCellCount" value={bloodWork.whiteBloodCellCount} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <InputGroup size="sm" className="mb-3">
                             <InputGroup.Prepend><InputGroup.Text id="RedBloodCellCount">Red Blood Cell Count</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="RedBloodCellCount" name="redBloodCellCount" value={bloodWork.redBloodCellCount} onChange={handleInputChange}/>
+                            <FormControl type="number" aria-label="RedBloodCellCount" name="redBloodCellCount" value={bloodWork.redBloodCellCount} onChange={handleInputChange} required/>
                         </InputGroup>
 
                         <ButtonGroup className="float-right">
