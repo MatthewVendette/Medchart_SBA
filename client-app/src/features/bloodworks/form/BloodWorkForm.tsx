@@ -1,15 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
 import { FormControl, InputGroup, Button, ButtonGroup, Modal, Form } from 'react-bootstrap';
-import { BloodWork } from '../../../app/models/bloodWork';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    bloodWork: BloodWork | undefined;
-    hideModal: () => void;
-    isModalFormOpen: boolean;
-    createOrEdit: (bloodWork: BloodWork) => void;
-}
+export default function BloodWorkForm() {
 
-export default function BloodWorkForm({bloodWork: selectedBloodWork, hideModal, isModalFormOpen, createOrEdit}: Props) {
+    const {bloodWorkStore} = useStore();
+    const {selectedBloodWork, isModalFormOpen, hideModal, createBloodWork, updateBloodWork} = bloodWorkStore;
 
     //Use the selected blood work if there is one. Otherwise, set a blank blood work to use.
     const initialState = selectedBloodWork ?? {
@@ -27,7 +23,7 @@ export default function BloodWorkForm({bloodWork: selectedBloodWork, hideModal, 
     const [bloodWork, setBloodWork] = useState(initialState);
 
     function handleSubmit() {
-       createOrEdit(bloodWork);
+       bloodWork.id ? updateBloodWork(bloodWork) : createBloodWork(bloodWork);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -88,7 +84,7 @@ export default function BloodWorkForm({bloodWork: selectedBloodWork, hideModal, 
 
                         <ButtonGroup className="float-right">
                             <Button variant="success" type="submit">Submit</Button>
-                            <Button variant="danger" onClick={hideModal}>Cancel</Button>
+                            <Button variant="secondary" onClick={hideModal}>Cancel</Button>
                         </ButtonGroup>
                     </Form>
                 </div>

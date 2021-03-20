@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Form, FormControl, Nav, Navbar } from 'react-bootstrap';
+import { useStore } from '../stores/store';
 
-interface Props {
-    isModalFormOpen: boolean;
-    showModal: () => void;
-}
 
-export default function NavBar({isModalFormOpen, showModal}: Props) {
+export default function NavBar() {
+
+    const {bloodWorkStore} = useStore();
+
     return (
         <>
             <Navbar bg="primary" variant="dark">
@@ -24,7 +24,7 @@ export default function NavBar({isModalFormOpen, showModal}: Props) {
                     {/* <Nav.Link>Home</Nav.Link>
                     <Nav.Link style={{marginRight:'10px'}}>Accounts</Nav.Link> */}
                     <Form inline>
-                        <Button variant="outline-light" onClick={showModal}>Submit new bloodwork</Button>
+                        <Button variant="outline-light" onClick={() => bloodWorkStore.showModal()}>Submit new bloodwork</Button>
                     </Form>
                 </Nav>
                 <Form inline>

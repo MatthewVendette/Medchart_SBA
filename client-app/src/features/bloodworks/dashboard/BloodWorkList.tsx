@@ -1,26 +1,28 @@
 import React from 'react';
-import { BloodWork } from '../../../app/models/bloodWork';
 import { Button, Card, Form, Row } from 'react-bootstrap'; 
+import { useStore } from '../../../app/stores/store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-    bloodWorks: BloodWork[];
-    selectBloodWork: (id: string) => void;
-    deleteBloodWork: (id: string) => void;
-}
+export default observer (function BloodWorkList() {
 
-export default function BloodWorkList({bloodWorks, selectBloodWork, deleteBloodWork}: Props) {
+    const {bloodWorkStore} = useStore();
+    const {deleteBloodWork, bloodWorksByExamDate} = bloodWorkStore;
+
+
     return (
         <>
-            {bloodWorks.map(bloodWork => (
+            {bloodWorksByExamDate.map(bloodWork => (
             <div key={bloodWork.id}>
                 <Row>
                     <Card style={{width:"100%"}}>
                         <Card.Body>
                             <Card.Title as='h4'>{bloodWork.title}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">{bloodWork.description}</Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted">{bloodWork.description}</Card.Subtitle> <hr />
+                            <Card.Text><b>Exam date</b>: {bloodWork.examDate}</Card.Text><hr />
+                            <Card.Text><b>Results date</b>: {bloodWork.resultsDate}</Card.Text><hr />
                             <Form className="float-right">
                                 <Button onClick={() => deleteBloodWork(bloodWork.id)} variant='danger' style={{marginRight:"5px"}}>Delete</Button>
-                                <Button onClick={() => selectBloodWork(bloodWork.id)} variant='primary'>View</Button>
+                                <Button onClick={() => bloodWorkStore.selectBloodWork(bloodWork.id)} variant='primary'>View Details</Button>
                             </Form>
                         </Card.Body>
                     </Card>
@@ -30,4 +32,4 @@ export default function BloodWorkList({bloodWorks, selectBloodWork, deleteBloodW
             ))}
         </>
     )
-}
+})

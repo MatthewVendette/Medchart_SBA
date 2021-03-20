@@ -1,14 +1,15 @@
 import React from 'react';
 import { Button, ButtonGroup, Card } from 'react-bootstrap';
-import { BloodWork } from '../../../app/models/bloodWork';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    bloodWork: BloodWork;
-    cancelSelectBloodWork: () => void;
-    showModal: (id: string) => void;
-}
+export default function BloodWorkDetails() {
+    const {bloodWorkStore} = useStore();
+    const {selectedBloodWork : bloodWork, showModal, cancelSelectBloodWork} = bloodWorkStore;
 
-export default function BloodWorkDetails({bloodWork, cancelSelectBloodWork, showModal}: Props) {
+    if (!bloodWork) return (
+        <></>
+    );
+
     return (
         <>
             <Card key={bloodWork.id} style={{marginBottom:'1em'}}>
@@ -26,7 +27,7 @@ export default function BloodWorkDetails({bloodWork, cancelSelectBloodWork, show
                     <div className="float-right">
                         <ButtonGroup aria-label="Report controls">
                             <Button onClick={() => showModal(bloodWork.id)} variant="warning">Edit</Button>
-                            <Button onClick={cancelSelectBloodWork} variant="danger">Cancel</Button>
+                            <Button onClick={cancelSelectBloodWork} variant="secondary">Cancel</Button>
                         </ButtonGroup>
                     </div>
                 </Card.Body>
