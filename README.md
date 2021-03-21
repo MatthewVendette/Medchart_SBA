@@ -9,7 +9,7 @@ Use [npm](https://www.npmjs.com/) to install required packages in the ./client-a
 npm install
 ```
 
-You must also have [.NET Core](https://dotnet.microsoft.com/) to run the program.
+You must also have [.NET](https://dotnet.microsoft.com/) to run the program.
 
 ## Usage
 
