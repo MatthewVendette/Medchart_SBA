@@ -1,3 +1,7 @@
 body {
   background-color: #EAEAEA !important;
 }
+
+.react-datepicker-wrapper {
+  width: 100%;
+}

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Core;
 using Domain;
 using MediatR;
 using Persistance;
@@ -9,12 +10,12 @@ namespace Application.BloodWorks
 {
     public class Details
     {
-        public class Query : IRequest<BloodWork>
+        public class Query : IRequest<Result<BloodWork>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, BloodWork>
+        public class Handler : IRequestHandler<Query, Result<BloodWork>>
         {
             private readonly DataContext _context;
             public Handler(DataContext context)
@@ -22,9 +23,10 @@ namespace Application.BloodWorks
                 _context = context;
             }
 
-            public async Task<BloodWork> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<BloodWork>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.BloodWorks.FindAsync(request.Id);
+                var bloodWork = await _context.BloodWorks.FindAsync(request.Id);
+                return Result<BloodWork>.Success(bloodWork);
             }
         }
     }

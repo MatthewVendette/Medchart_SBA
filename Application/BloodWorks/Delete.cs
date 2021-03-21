@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Core;
 using MediatR;
 using Persistance;
 
@@ -8,12 +9,12 @@ namespace Application.BloodWorks
 {
     public class Delete
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
             public Handler(DataContext context)
@@ -21,15 +22,19 @@ namespace Application.BloodWorks
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var bloodWork = await _context.BloodWorks.FindAsync(request.Id); //TODO: Add 404 handling
+                var bloodWork = await _context.BloodWorks.FindAsync(request.Id);
+
+                if (bloodWork == null) return null;
 
                 _context.Remove(bloodWork);
 
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0; //result is true if succesfully written in to the database, false if no changes were made.
 
-                return Unit.Value;
+                if (!result) return Result<Unit>.Failure("Failed to remove blood work entry.");
+
+                return Result<Unit>.Success(Unit.Value);;
             }
         }
     }

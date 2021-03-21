@@ -1,6 +1,12 @@
-import React, { ChangeEvent, useState } from 'react';
-import { FormControl, InputGroup, Button, ButtonGroup, Modal, Form } from 'react-bootstrap';
+import { Formik, Form } from 'formik';
+import React from 'react';
+import { Button, Modal } from 'react-bootstrap';
 import { useStore } from '../../../app/stores/store';
+import * as Yup from 'yup';
+import MyTextInput from '../../../app/common/forms/MyTextInput';
+import MyTextArea from '../../../app/common/forms/MyTextArea';
+import MyDateInput from '../../../app/common/forms/MyDateInput';
+import { BloodWork } from '../../../app/models/bloodWork';
 
 export default function BloodWorkForm() {
 
@@ -8,11 +14,11 @@ export default function BloodWorkForm() {
     const {selectedBloodWork, isModalFormOpen, hideModal, createBloodWork, updateBloodWork} = bloodWorkStore;
 
     //Use the selected blood work if there is one. Otherwise, set a blank blood work to use.
-    const initialState = selectedBloodWork ?? {
+    const bloodWork = selectedBloodWork ?? {
         id: '',
         title: '',
-        examDate: '',
-        resultsDate: '',
+        examDate: null,
+        resultsDate: null,
         description: '',
         hemoglobin: 0,
         hematocrit: 0,
@@ -20,16 +26,20 @@ export default function BloodWorkForm() {
         redBloodCellCount: 0
     }
 
-    const [bloodWork, setBloodWork] = useState(initialState);
+    const validationSchema = Yup.object({
+        title: Yup.string().required('The blood work report title is required.'),
+        examDate: Yup.string().required('The blood work report exam date is required.'),
+        resultsDate: Yup.string().required('The blood work results date is required.'),
+        description: Yup.string().required('The blood work report description is required.'),
+        hemoglobin: Yup.string().required('The blood work report hemoglobin count is required.'),
+        hematocrit: Yup.string().required('The blood work report hematocrit is required.'),
+        whiteBloodCellCount: Yup.string().required('The blood work report white blood cell count is required.'),
+        redBloodCellCount: Yup.string().required('The blood work report red blood cell count is required.')
+    })
 
-    function handleSubmit() {
+    function handleFormSubmit(bloodWork: BloodWork) {
        bloodWork.id ? updateBloodWork(bloodWork) : createBloodWork(bloodWork);
     }
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const{name, value} = event.target;
-        setBloodWork({...bloodWork, [name]: value});
-    }   
 
     return (
         <>
@@ -39,54 +49,38 @@ export default function BloodWorkForm() {
                 backdrop="static"
             >
                 <div style={{marginRight:"1em", marginLeft:"1em", marginTop:"1em", marginBottom:"1em"}}>
-                    <Form onSubmit={handleSubmit} autoComplete="off">
-                        <Modal.Header><Modal.Title>Blood Work Report</Modal.Title></Modal.Header>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="Title">Title</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl aria-label="Title" name="title" value={bloodWork.title} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="ExamDate">Exam Date</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl type="date" aria-label="ExamDate" name="examDate" value={bloodWork.examDate} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="ResultsDate">Results Date</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl type="date" aria-label="ResultsDate" name="resultsDate" value={bloodWork.resultsDate} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="Description">Description</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl as="textarea" aria-label="Description" name="description" value={bloodWork.description} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="Hemoglobin">Hemoglobin</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl type="number" aria-label="Hemoglobin" name="hemoglobin" value={bloodWork.hemoglobin} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="Hematocrit">Hematocrit</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl type="number" aria-label="Hematocrit" name="hematocrit" value={bloodWork.hematocrit} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="WhiteBloodCellCount">White Blood Cell Count</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl type="number" aria-label="WhiteBloodCellCount" name="whiteBloodCellCount" value={bloodWork.whiteBloodCellCount} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <InputGroup size="sm" className="mb-3">
-                            <InputGroup.Prepend><InputGroup.Text id="RedBloodCellCount">Red Blood Cell Count</InputGroup.Text></InputGroup.Prepend>
-                            <FormControl type="number" aria-label="RedBloodCellCount" name="redBloodCellCount" value={bloodWork.redBloodCellCount} onChange={handleInputChange} required/>
-                        </InputGroup>
-
-                        <ButtonGroup className="float-right">
-                            <Button variant="success" type="submit">Submit</Button>
-                            <Button variant="secondary" onClick={hideModal}>Cancel</Button>
-                        </ButtonGroup>
-                    </Form>
+                    <Formik 
+                        enableReinitialize 
+                        validationSchema={validationSchema} 
+                        initialValues={bloodWork} 
+                        onSubmit={values => handleFormSubmit(values)}
+                    >
+                        {({ handleSubmit }) => (
+                            <Form onSubmit={handleSubmit} autoComplete="off">
+                                <Modal.Header><Modal.Title>Blood Work Report</Modal.Title></Modal.Header>
+                                <MyTextInput placeholder='Title' name='title' />
+                                <MyTextArea placeholder='Description' name='description' rows={3}/>
+                                <MyTextInput placeholder='Hemoglobin' name='hemoglobin' type='number'/>
+                                <MyTextInput placeholder='Hematocrit' name='hematocrit' type='number'/>
+                                <MyTextInput placeholder='White Blood Cell Count' name='whiteBloodCellCount' type='number'/>
+                                <MyTextInput placeholder='Red Blood Cell Count' name='redBloodCellCount' type='number'/>
+                                <MyDateInput
+                                    placeholderText='Exam Date' 
+                                    name='examDate'
+                                    dateFormat='MMMM d, yyyy'
+                                    title="Exam Date"
+                                />
+                                <MyDateInput
+                                    placeholderText='Results Date' 
+                                    name='resultsDate'
+                                    dateFormat='MMMM d, yyyy'
+                                    title="Results Date"
+                                />
+                                <Button variant="success" type="submit">Submit</Button>
+                                <Button variant="secondary" onClick={hideModal}>Cancel</Button>
+                        </Form>
+                        )}
+                    </Formik>
                 </div>
             </Modal>
         </>

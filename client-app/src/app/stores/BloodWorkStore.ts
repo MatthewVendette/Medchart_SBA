@@ -17,7 +17,7 @@ export default class BloodWorkStore {
     // Orders the array by their exam date
     get bloodWorksByExamDate() {
         return Array.from(this.bloodWorkRegistry.values()).sort((a, b) => 
-            Date.parse(a.examDate) - Date.parse(b.examDate));
+            a.examDate!.getTime() - b.examDate!.getTime());
     }
 
     loadBloodWorks = async () => {
@@ -25,8 +25,8 @@ export default class BloodWorkStore {
             const bloodWorks = await agent.BloodWorks.list();
             runInAction(() => {
                 bloodWorks.forEach(bloodWork => {
-                    bloodWork.examDate = bloodWork.examDate.split('T')[0]; //remove precise time
-                    bloodWork.resultsDate = bloodWork.resultsDate.split('T')[0]; //remove precise time
+                    bloodWork.examDate = new Date(bloodWork.examDate!);
+                    bloodWork.resultsDate =  new Date(bloodWork.resultsDate!);
                     this.bloodWorkRegistry.set(bloodWork.id, bloodWork);
                 })
             })

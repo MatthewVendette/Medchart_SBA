@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './app/layout/App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import './app/layout/styles.css';
 import { store, StoreContext } from './app/stores/store';
 

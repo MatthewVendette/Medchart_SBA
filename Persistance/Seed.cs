@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain;
+using Microsoft.AspNetCore.Identity;
 using Persistance;
 
 namespace Persistance
@@ -10,8 +11,23 @@ namespace Persistance
     //Seeds the database with some initial data for testing
     public class Seed
     {
-        public static async Task SeedData (DataContext context) 
+        public static async Task SeedData (DataContext context, UserManager<AppUser> userManager) 
         {
+            if(!userManager.Users.Any())
+            {
+                var users = new List<AppUser>
+                {
+                    new AppUser{FirstName = "Bob", UserName = "bob", Email="bob@test.com"},
+                    new AppUser{FirstName = "Frank", UserName = "frank", Email="frank@test.com"},
+                    new AppUser{FirstName = "Kim", UserName = "kim", Email="kim@test.com"},
+                };
+
+                foreach (var user in users) 
+                {
+                    await userManager.CreateAsync(user, "Password123");
+                }
+            }
+
             if (context.BloodWorks.Any()) return; //only seed if empty
             
             var bloodWorks = new List<BloodWork>

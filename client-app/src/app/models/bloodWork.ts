@@ -1,8 +1,8 @@
 export interface BloodWork {
     id: string;
     title: string;
-    examDate: string;
-    resultsDate: string;
+    examDate: Date | null;
+    resultsDate: Date | null;
     description: string;
     hemoglobin: number;
     hematocrit: number;
