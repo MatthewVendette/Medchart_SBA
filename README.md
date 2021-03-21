@@ -9,7 +9,7 @@ Use [npm](https://www.npmjs.com/) to install required packages in the ./client-a
 npm install
 ```
 
-You must also have [.NET Core](https://dotnet.microsoft.com/) to run the program.
+You must also have [.NET](https://dotnet.microsoft.com/) to run the program.
 
 ## Usage
 
@@ -32,7 +32,8 @@ Currently this mock website doesn't have any registration features. To log in, y
  * kim@test.com, pass: Password123
 
  ## Missing features
- There are three user stories I would wish to complete out if I had more time:
+ There are three user stories I would wish to complete if I had more time:
   * User registration
   * Search functionality
   * Graph functionality for all of a user's reports
+  * Any testing at all
