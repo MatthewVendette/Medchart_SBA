@@ -11,7 +11,7 @@ npm install
 
 You must also have [.NET Core](https://dotnet.microsoft.com/) to run the program.
 
-##Usage
+## Usage
 
 Once required packages are running, run the API in the ./API folder using
 ```
