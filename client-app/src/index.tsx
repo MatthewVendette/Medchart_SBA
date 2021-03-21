@@ -9,7 +9,7 @@ import { store, StoreContext } from './app/stores/store';
 
 
 ReactDOM.render(
-  <StoreContext.Provider value={store}>
+  <StoreContext.Provider value={store}> {/* For MobX, which I used as my state manager instead of Redux. */}
     <App />
   </StoreContext.Provider>,
   document.getElementById('root')

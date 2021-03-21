@@ -5,6 +5,7 @@ import { store } from '../stores/store';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
+//For persistency; if there's a get request to accounts and the user has a token, use the token
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
     if (token) config.headers.Authorization = `Bearer ${token}`

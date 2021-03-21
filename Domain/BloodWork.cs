@@ -6,8 +6,8 @@ namespace Domain
     public class BloodWork
     {
         public Guid Id { get; set; }
-         [ForeignKey("AspNetUsers")]
-         public Guid userId { get; set; }
+        [ForeignKey("AspNetUsers")]
+        public Guid userId { get; set; }
 
         public string Title { get; set; } //TODO: Replace this with Username, FK with Users DB
         public DateTime ExamDate { get; set; }
