@@ -10,6 +10,8 @@ export default class BloodWorkStore {
     bloodWorkRegistry = new Map<string, BloodWork>();
     selectedBloodWork: BloodWork | undefined = undefined;
     isModalFormOpen = false;
+    isModalChartOpen = false;
+    chartType = "Hemoglobin";
 
     constructor() {
         makeAutoObservable(this);
@@ -100,5 +102,14 @@ export default class BloodWorkStore {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    showChartModal = (chartType: string) => {
+        this.chartType = chartType;
+        this.isModalChartOpen = true;
+    }
+
+    hideChartModal = () => {
+        this.isModalChartOpen = false;
     }
 }

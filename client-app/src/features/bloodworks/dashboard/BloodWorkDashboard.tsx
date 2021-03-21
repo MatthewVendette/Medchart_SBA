@@ -3,6 +3,7 @@ import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap'
 import { useStore } from '../../../app/stores/store';
 import LoginForm from '../../users/LoginForm';
+import BloodWorkChart from '../charts/BloodWorkChart';
 import BloodWorkDetails from '../details/BloodWorkDetails';
 import BloodWorkForm from '../form/BloodWorkForm';
 import BloodWorkList from './BloodWorkList';
@@ -11,7 +12,7 @@ import BloodWorkList from './BloodWorkList';
 export default observer (function BloodWorkDashboard() {
 
     const {bloodWorkStore, userStore} = useStore();
-    const {selectedBloodWork, isModalFormOpen} = bloodWorkStore;
+    const {selectedBloodWork, isModalFormOpen, isModalChartOpen} = bloodWorkStore;
     const {isModalLoginOpen} = userStore;
 
     return (
@@ -31,6 +32,9 @@ export default observer (function BloodWorkDashboard() {
 
                 { isModalLoginOpen &&
                     <LoginForm />}
+
+                { isModalChartOpen &&
+                    <BloodWorkChart/>}
                 </Col>
             </Row>
         </Container>
