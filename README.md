@@ -32,7 +32,7 @@ Currently this mock website doesn't have any registration features. To log in, y
  * kim@test.com, pass: Password123
 
  ## Missing features
- There are three user stories I would wish to complete out if I had more time:
+ There are three user stories I would wish to complete if I had more time:
   * User registration
   * Search functionality
   * Graph functionality for all of a user's reports
