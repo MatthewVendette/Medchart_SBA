@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "ec88f49f-55fa-4faf-8c6b-67faa973d92a",
+		"name": "BloodWorks",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BloodWork Reports",
+			"item": [
+				{
+					"name": "Add new",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var moment = require(\"moment\");\r",
+									"\r",
+									"pm.environment.set('ExamDate', moment().add(-5, 'months').toISOString());\r",
+									"pm.environment.set('ResultsDate', moment().add(-3, 'months').toISOString());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{$guid}}\",\r\n    \"title\": \"Frank's bloodwork\",\r\n    \"examDate\": \"{{ExamDate}}\",\r\n    \"resultsDate\": \"{{ResultsDate}}\",\r\n    \"description\": \"Bloodwork results from test done 5 months ago\",\r\n    \"hemoglobin\": 14,\r\n    \"hematocrit\": 44,\r\n    \"whiteBloodCellCount\": 6900,\r\n    \"redBloodCellCount\": 4025500\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/bloodworks/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"bloodworks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Get Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/bloodworks/878ba691-5cb8-49d2-babc-7041dd9c6d3b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"bloodworks",
+								"878ba691-5cb8-49d2-babc-7041dd9c6d3b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var moment = require(\"moment\");\r",
+									"\r",
+									"pm.environment.set('ExamDate', moment().add(-5, 'months').toISOString());\r",
+									"pm.environment.set('ResultsDate', moment().add(-3, 'months').toISOString());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Frank's UPDATED bloodwork\",\r\n    \"examDate\": \"{{ExamDate}}\",\r\n    \"resultsDate\": \"{{ResultsDate}}\",\r\n    \"description\": \"Bloodwork results from test done 5 months ago\",\r\n    \"hemoglobin\": 14,\r\n    \"hematocrit\": 44,\r\n    \"whiteBloodCellCount\": 6900,\r\n    \"redBloodCellCount\": 4025500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/bloodworks/878ba691-5cb8-49d2-babc-7041dd9c6d3b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"bloodworks",
+								"878ba691-5cb8-49d2-babc-7041dd9c6d3b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/bloodworks/878ba691-5cb8-49d2-babc-7041dd9c6d3b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"bloodworks",
+								"878ba691-5cb8-49d2-babc-7041dd9c6d3b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login to user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bob@test.com\",\r\n    \"password\": \"Password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/account/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FirstName\": \"Alice\",\r\n    \"Username\": \"alice\",\r\n    \"Password\": \"Password123\",\r\n    \"Email\": \"alice@test.ca\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/account/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged in User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:5000"
+		}
+	]
+}
