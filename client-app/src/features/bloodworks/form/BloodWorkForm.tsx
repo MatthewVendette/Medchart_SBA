@@ -17,6 +17,7 @@ export default observer(function BloodWorkForm() {
     //Use the selected blood work if there is one. Otherwise, set a blank blood work to use.
     const bloodWork = selectedBloodWork ?? {
         id: '',
+        userId: '',
         title: '',
         examDate: null,
         resultsDate: null,

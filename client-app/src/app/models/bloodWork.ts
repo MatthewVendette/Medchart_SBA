@@ -1,5 +1,6 @@
 export interface BloodWork {
     id: string;
+    userId: string;
     title: string;
     examDate: Date | null;
     resultsDate: Date | null;

@@ -23,7 +23,7 @@ export default observer(function NavBar() {
                     Matt's SBA</Navbar.Brand>
                 <Nav className="mr-auto">
                     <Form inline>
-                        <Button variant="outline-light" onClick={() => bloodWorkStore.showModal()}>Submit new bloodwork</Button>
+                        {userStore.IsLoggedIn ? <Button variant="outline-light" onClick={() => bloodWorkStore.showModal()}>Submit new bloodwork</Button> : <></>}
                     </Form>
                 </Nav>
                 <Form inline>

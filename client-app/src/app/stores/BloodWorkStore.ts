@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { BloodWork } from "../models/bloodWork";
 import {v4 as uuid} from 'uuid';
+import { store } from "./store";
 
 export default class BloodWorkStore {
 
@@ -20,17 +21,21 @@ export default class BloodWorkStore {
             a.examDate!.getTime() - b.examDate!.getTime());
     }
 
+    //Load the bloodworks that are associated with the logged in user.
     loadBloodWorks = async () => {
         try {
-            const bloodWorks = await agent.BloodWorks.list();
-            runInAction(() => {
-                bloodWorks.forEach(bloodWork => {
-                    bloodWork.examDate = new Date(bloodWork.examDate!);
-                    bloodWork.resultsDate =  new Date(bloodWork.resultsDate!);
-                    this.bloodWorkRegistry.set(bloodWork.id, bloodWork);
+            if (store.userStore.IsLoggedIn){
+                const bloodWorks = (await agent.BloodWorks.list()).filter(x => (x.userId === store.userStore.user?.id));
+                runInAction(() => {
+                    bloodWorks.forEach(bloodWork => {
+                        bloodWork.examDate = new Date(bloodWork.examDate!);
+                        bloodWork.resultsDate =  new Date(bloodWork.resultsDate!);
+                        this.bloodWorkRegistry.set(bloodWork.id, bloodWork);
+                    })
                 })
-            })
-
+            } else {
+                this.bloodWorkRegistry.clear();
+            }
         } catch (error) {
             console.log(error); //TODO: Proper error handling
         }
@@ -44,17 +49,21 @@ export default class BloodWorkStore {
         this.selectedBloodWork = undefined;
     }
 
+    //Shows the edit/create modal
     showModal = (id?: string) => {
         id ? this.selectBloodWork(id) : this.cancelSelectBloodWork();
         this.isModalFormOpen = true;
     }
 
+    //Hides the edit/create modal
     hideModal = () => {
         this.isModalFormOpen = false;
     }
 
+    //create a new bloodwork associated with the logged in user
     createBloodWork = async (bloodWork: BloodWork) => {
         bloodWork.id = uuid();
+        bloodWork.userId = store.userStore.user!.id;
         try {
            await agent.BloodWorks.create(bloodWork);
            runInAction(() => {
@@ -67,6 +76,7 @@ export default class BloodWorkStore {
         }
     }
 
+    //update (edit) a bloodwork that's selected
     updateBloodWork = async (bloodWork: BloodWork) => {
         try {
             await agent.BloodWorks.update(bloodWork);
@@ -80,6 +90,7 @@ export default class BloodWorkStore {
          }
     }
 
+    //delete a selected bloodwork, removing it from highlight
     deleteBloodWork = async (id: string) => {
         try {
             if (this.selectedBloodWork?.id === id) this.cancelSelectBloodWork();

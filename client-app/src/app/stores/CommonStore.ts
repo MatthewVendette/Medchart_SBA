@@ -7,6 +7,8 @@ export default class CommonStore {
     constructor() {
         makeAutoObservable(this)
 
+        //For persistency; if a user is logged in, they will generate a token. 
+        //If the token exists on the user's PC, they'll stay logged in while the token exists (ie. doesn't expire or until user logs out)
         reaction(
             () => this.token,
             token => {

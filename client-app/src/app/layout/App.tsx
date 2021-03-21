@@ -7,15 +7,14 @@ import { observer } from 'mobx-react-lite';
 
 function App() {
 
-  const {bloodWorkStore, commonStore, userStore} = useStore();
+  const { commonStore, userStore} = useStore();
 
-  //get the bloodwork results from database and set in state
+  //Log in user from previous token
   useEffect(() => {
     if (commonStore.token) {
       userStore.getUser();
     }
-    bloodWorkStore.loadBloodWorks();
-  }, [bloodWorkStore, commonStore, userStore])
+  }, [commonStore, userStore])
 
   return (
     <>
