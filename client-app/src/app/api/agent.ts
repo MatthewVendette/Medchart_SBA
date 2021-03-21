@@ -1,7 +1,15 @@
 import axios, { AxiosResponse } from 'axios';
 import { BloodWork } from '../models/bloodWork';
+import { User, UserCredentials } from '../models/user';
+import { store } from '../stores/store';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if (token) config.headers.Authorization = `Bearer ${token}`
+    return config
+})
 
 const responseBody = <T> (response: AxiosResponse <T>) => response.data;
 
@@ -22,8 +30,15 @@ const BloodWorks = {
 
 }
 
+const Account = {
+    current: () => requests.get<User>('/account'),
+    login: (user: UserCredentials) => requests.post<User>('/account/login', user ),
+    register: (user: UserCredentials) => requests.post<User>('/account/register', user),
+}
+
 const agent = {
-    BloodWorks
+    BloodWorks,
+    Account
 }
 
 export default agent;

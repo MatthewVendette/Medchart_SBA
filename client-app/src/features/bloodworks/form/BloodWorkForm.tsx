@@ -7,8 +7,9 @@ import MyTextInput from '../../../app/common/forms/MyTextInput';
 import MyTextArea from '../../../app/common/forms/MyTextArea';
 import MyDateInput from '../../../app/common/forms/MyDateInput';
 import { BloodWork } from '../../../app/models/bloodWork';
+import { observer } from 'mobx-react-lite';
 
-export default function BloodWorkForm() {
+export default observer(function BloodWorkForm() {
 
     const {bloodWorkStore} = useStore();
     const {selectedBloodWork, isModalFormOpen, hideModal, createBloodWork, updateBloodWork} = bloodWorkStore;
@@ -85,4 +86,4 @@ export default function BloodWorkForm() {
             </Modal>
         </>
     )
-}
+})

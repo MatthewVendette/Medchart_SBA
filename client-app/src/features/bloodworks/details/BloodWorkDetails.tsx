@@ -1,9 +1,10 @@
 import { format } from 'date-fns';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Button, ButtonGroup, Card } from 'react-bootstrap';
 import { useStore } from '../../../app/stores/store';
 
-export default function BloodWorkDetails() {
+export default observer(function BloodWorkDetails() {
     const {bloodWorkStore} = useStore();
     const {selectedBloodWork : bloodWork, showModal, cancelSelectBloodWork} = bloodWorkStore;
 
@@ -33,4 +34,4 @@ export default function BloodWorkDetails() {
             </Card>
         </>
     )
-}
+})

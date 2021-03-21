@@ -3,15 +3,19 @@ import NavBar from './NavBar';
 import { Container } from 'react-bootstrap';
 import BloodWorkDashboard from '../../features/bloodworks/dashboard/BloodWorkDashboard';
 import { useStore } from '../stores/store';
+import { observer } from 'mobx-react-lite';
 
 function App() {
 
-  const {bloodWorkStore} = useStore();
+  const {bloodWorkStore, commonStore, userStore} = useStore();
 
   //get the bloodwork results from database and set in state
   useEffect(() => {
+    if (commonStore.token) {
+      userStore.getUser();
+    }
     bloodWorkStore.loadBloodWorks();
-  }, [bloodWorkStore])
+  }, [bloodWorkStore, commonStore, userStore])
 
   return (
     <>
@@ -23,4 +27,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

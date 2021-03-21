@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap'
 import { useStore } from '../../../app/stores/store';
+import LoginForm from '../../users/LoginForm';
 import BloodWorkDetails from '../details/BloodWorkDetails';
 import BloodWorkForm from '../form/BloodWorkForm';
 import BloodWorkList from './BloodWorkList';
@@ -9,8 +10,9 @@ import BloodWorkList from './BloodWorkList';
 
 export default observer (function BloodWorkDashboard() {
 
-    const {bloodWorkStore} = useStore();
+    const {bloodWorkStore, userStore} = useStore();
     const {selectedBloodWork, isModalFormOpen} = bloodWorkStore;
+    const {isModalLoginOpen} = userStore;
 
     return (
         <Container>
@@ -25,7 +27,10 @@ export default observer (function BloodWorkDashboard() {
                     />} {/* Only attempt to load details when one exists to be loaded */}
 
                 { isModalFormOpen &&
-                <BloodWorkForm/>}
+                    <BloodWorkForm/>}
+
+                { isModalLoginOpen &&
+                    <LoginForm />}
                 </Col>
             </Row>
         </Container>
