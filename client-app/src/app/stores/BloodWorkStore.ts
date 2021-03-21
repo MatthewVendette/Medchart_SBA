@@ -34,6 +34,7 @@ export default class BloodWorkStore {
                     })
                 })
             } else {
+                this.cancelSelectBloodWork();
                 this.bloodWorkRegistry.clear();
             }
         } catch (error) {
